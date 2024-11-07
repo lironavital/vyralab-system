@@ -1,0 +1,5 @@
+be/node_modules
+be/.env
+
+fe/node_modules
+fe/.env

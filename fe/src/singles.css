@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@500&family=Poltawski+Nowy&display=swap');
+
+.bg_full_single {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    overflow: auto;
+}
+
+.singleLink_single {
+    width: 80%;
+    color: black;
+    text-decoration: none;
+    font-size: medium;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 10px;
+    padding: 10px;
+    box-shadow: 0px 2px 11px 7px rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    background-color: rgba(255, 255, 255, 0.711);
+    margin-bottom: 2vh;
+    transition: background-color 0.5s, border-radius ease-in 0.3s;
+    border-radius: 20px;
+
+}
+
+.singleLink_single:hover {
+    background-color: rgb(167, 167, 167);
+    border-radius: 10px;
+    color: white;
+}
+
+.single_name {
+    font-family: 'Poltawski Nowy', serif;
+    text-align: center;
+    font-size: 7vw;
+    letter-spacing: 0.4em;
+}
+
+.presave_button {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 250px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 15px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: larger;
+    text-decoration: none;
+    box-shadow: 0px 2px 11px 7px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s, border-radius ease-in 0.2s;
+    background-color: rgba(249, 249, 249, 0.389);
+    color: white;
+}
+
+.presave_button:hover {
+    background-color: rgba(255, 255, 255, 0.754);
+    color: black;
+    border-radius: 10px;
+}
+
+
+.presave_success {
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
+    font-size: larger;
+}
+
+@media (min-width: 1100px) {
+    .singleLink_single {
+        width: 50%;
+    }
+}
