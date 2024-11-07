@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
     res.send("HLS")
 })
 
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 1234
 app.listen(PORT, () => {
     // console.log("Setting up IP2LOCATION")
     // const ip2loc_ipv4 = new ip2loc.IP2Location()
@@ -38,5 +38,5 @@ app.listen(PORT, () => {
     // global.ipv4 = ip2loc_ipv4
     // global.ipv6 = ip2loc_ipv6
 
-    console.log("App is litening on port " + PORT)
+    console.log("App is litening on http://localhost:" + PORT)
 })

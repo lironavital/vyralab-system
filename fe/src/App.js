@@ -1,6 +1,5 @@
 import { Routes, Route, Link, useParams } from "react-router-dom";
 import Main from "./Pages/Main";
-import Admin from "./Pages/Admin";
 import { useState } from "react";
 import Login from "./Pages/Login";
 

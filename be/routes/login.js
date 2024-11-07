@@ -1,5 +1,4 @@
 const app = require('express').Router()
-const { addLink, getLinks, getHomepageConfigs, } = require('../db/firestoreHandler')
 const { signJWT } = require('../middlewares/jwt')
 
 const creds = { username: 'Adm33nD0H37@L4st@S1ght', password: '!*(_RJ!(UN@()_I!@()+R(_UNGB' }

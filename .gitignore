@@ -1,5 +1,6 @@
 be/node_modules
 be/.env
+be/creds
 
 fe/node_modules
 fe/.env

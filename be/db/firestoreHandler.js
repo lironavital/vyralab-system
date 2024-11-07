@@ -1,6 +1,6 @@
 const { initializeApp, cert } = require('firebase-admin/app');
 const { getFirestore, FieldValue } = require('firebase-admin/firestore');
-const serviceAccount = require('../creds/hls-links-firebase-adminsdk-c3ei4-f5f9c13090.json');
+const serviceAccount = require('../creds/vyralab-landing-firebase-adminsdk-v8y55-fe14db5c65');
 const uuid = require('uuid')
 
 initializeApp({
