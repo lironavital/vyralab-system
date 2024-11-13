@@ -23,8 +23,8 @@ const Login = ({ setLoggedUser }) => {
         }
 
         try {
-            const response = await axios.post(`${config.backend}/login`, { username, password, });
-            if (response.status === 200) { 
+            const response = await axios.post(`${config.backend}/login`, { username, password, }, { withCredentials: true });
+            if (response.status === 200) {
                 setLoggedUser(response.data)
             }
             console.log('Login successful:', response.data);
