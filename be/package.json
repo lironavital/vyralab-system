@@ -21,7 +21,7 @@
   "scripts": {
     "start": "node app.js",
     "nodemon": "nodemon app.js --ignore ./db/db.json",
-    "dockerbuild": "docker buildx build --platform linux/amd64 -t gcr.io/hls-links/be .",
+    "dockerbuild": "docker buildx build --platform linux/amd64 -t gcr.io/vyralab/be .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {

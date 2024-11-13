@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser')
 const app = express()
 const login_route = require('./routes/login')
 const platforms_route = require('./routes/platforms')
+const oauth_route = require('./routes/oauth')
 // const ip2loc = require("ip2location-nodejs");
 const path = require('path')
 
@@ -25,6 +26,7 @@ app.set('trust proxy', true)
 //ROUTES
 app.use('/login', login_route)
 app.use('/platforms', platforms_route)
+app.use('/oauth', oauth_route)
 app.get('/', (req, res) => {
     res.send("HLS")
 })

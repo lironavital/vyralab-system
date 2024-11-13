@@ -65,20 +65,26 @@ export default function LoginToPlatforms({ }) {
     };
 
 
-    return (<div>
-        {Object.keys(loggedPlatforms).map(platform => {
-            if (!loggedPlatforms[platform]) {
-                return returnPlatformByName({ platformName: platform, loginFunc: handleFacebookLogin })
-            }
-            else {
-                return <div>
-                    <h1>
-                        {platform} Logged!
-                    </h1>
-                </div>
-            }
-        })}
-    </div>)
+    const handleTikTokLogin = () => {
+        const tiktokAuthUrl = `https://www.tiktok.com/v2/auth/authorize/?client_key=${config.tiktok_client_key}&scope=user.info.basic,video.upload,artist.certification.read,artist.certification.update,user.info.profile,user.info.stats,video.list&response_type=code&redirect_uri=${encodeURIComponent(config.tiktok_redirect_uri)}`;
+        window.location.href = tiktokAuthUrl;
+    };
+
+    return (
+        <div>
+            {Object.keys(loggedPlatforms).map(platform => {
+                if (!loggedPlatforms[platform]) {
+                    return returnPlatformByName({ platformName: platform, loginFunc: platform === 'facebook' ? handleFacebookLogin : handleTikTokLogin });
+                } else {
+                    return (
+                        <div key={platform}>
+                            <h1>{platform} Logged!</h1>
+                        </div>
+                    );
+                }
+            })}
+        </div>
+    );
 }
 
 function returnPlatformByName({ platformName, loginFunc }) {
@@ -88,6 +94,13 @@ function returnPlatformByName({ platformName, loginFunc }) {
                 <h1>Facebook Login</h1>
                 <button onClick={loginFunc}>Login with Facebook</button>
             </div>
+
+        case 'tiktok':
+            return <div key="tiktok">
+                <h1>TikTok Login</h1>
+                <button onClick={loginFunc}>Login with TikTok</button>
+            </div>
+
         default:
             return
     }

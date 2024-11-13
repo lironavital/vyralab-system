@@ -36,6 +36,10 @@ app.post('/add', validateJWT, async (req, res) => {
     if (data.platform === 'facebook') {
         newFields.fb_act = data.resp.accessToken
         newFields.fb_act_expire = data.resp.expiresIn
+        // const p = await facebook_getManagedPages(newFields.fb_act)
+    }
+    if (data.platform === 'tiktok') {
+        newFields.tt_act = data.resp.tt_act
     }
 
     updateUser(req.userData.id, newFields)
@@ -44,3 +48,21 @@ app.post('/add', validateJWT, async (req, res) => {
 })
 
 module.exports = app 
+
+
+const axios = require('axios');
+
+async function facebook_getManagedPages(accessToken) {
+  try {
+    const response = await axios.get('https://graph.facebook.com/v21.0/me/home', {
+      params: {
+        access_token: accessToken,
+      },
+    });
+
+    debugger
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching managed pages:', error.response ? error.response.data : error.message);
+  }
+}

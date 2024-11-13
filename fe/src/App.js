@@ -1,9 +1,10 @@
-import { Routes, Route, Link, useParams } from "react-router-dom";
+import { Routes, Route, } from "react-router-dom";
 import Main from "./pages/Main";
 import { useEffect, useState } from "react";
 import Login from "./pages/Login";
 import { getConfig } from "./config/getConfig";
 import axios from "axios";
+import TtAct from "./pages/TtAct";
 const config = getConfig()
 
 axios.defaults.withCredentials = true;
@@ -40,6 +41,7 @@ function App() {
       {loggedUser && <button onClick={logout}>Log Out</button>}
       <Routes>
         {loggedUser ? <Route path="/" element={<Main loggedUser={loggedUser} />} /> : <Route path="/" element={<Login setLoggedUser={setLoggedUser} />} />}
+        {loggedUser ? <Route path="/tt_act" element={<TtAct />} /> : <Route path="/" element={<Login setLoggedUser={setLoggedUser} />} />}
       </Routes>
     </div>
   );

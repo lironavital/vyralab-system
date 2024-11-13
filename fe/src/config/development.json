@@ -1,5 +1,8 @@
 {
     "backend": "http://localhost:3333",
     "fb_app_id": 1111724593709260,
-    "fb_app_secret": "0795ea16d15fde5145a2ed1ec150139a"
+    "fb_app_secret": "0795ea16d15fde5145a2ed1ec150139a",
+    "tiktok_client_key": "sbawkr1cow3k050wca",
+    "tiktok_secret": "Uhz1fJ53yZWN603SAyERLBnc5eDuEW2S",
+    "tiktok_redirect_uri": "https://be-985153545599.me-west1.run.app/oauth/tt_redirect"
 }

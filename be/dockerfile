@@ -14,7 +14,7 @@ RUN npm ci --only=production
 COPY . .
 
 # Set the environment variables
-ENV PROJECT_NAME=hls-links
+ENV PROJECT_NAME=vyralab
 ENV NODE_ENV=production
 
 # Expose port 80 for the server

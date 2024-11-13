@@ -1,7 +1,7 @@
 be/node_modules
 be/.env
 be/creds
-be/db/db.json
 
 fe/node_modules
 fe/.env
+be/db/db.json
