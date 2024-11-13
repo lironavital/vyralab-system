@@ -1,3 +1,5 @@
 {
-    "backend": "https://be-cpde7aopyq-uc.a.run.app"
+    "backend": "https://be-cpde7aopyq-uc.a.run.app",
+    "fb_app_id": 1111724593709260,
+    "fb_app_secret": "0795ea16d15fde5145a2ed1ec150139a"
 }

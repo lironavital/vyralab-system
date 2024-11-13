@@ -20,7 +20,7 @@
   },
   "scripts": {
     "start": "node app.js",
-    "nodemon": "nodemon app.js",
+    "nodemon": "nodemon app.js --ignore ./db/db.json",
     "dockerbuild": "docker buildx build --platform linux/amd64 -t gcr.io/hls-links/be .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
