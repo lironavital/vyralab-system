@@ -6,8 +6,10 @@ const app = express()
 const login_route = require('./routes/login')
 const platforms_route = require('./routes/platforms')
 const oauth_route = require('./routes/oauth')
+const tiktok_route = require('./routes/tiktok')
 // const ip2loc = require("ip2location-nodejs");
 const path = require('path')
+const pg = require('./db/postgres')
 
 //NODE SETTINGS
 const acceptOrigin = process.env.NODE_ENV === "development" ? ["http://localhost:3001", "http://localhost:3000"] : ["https://hls-links.web.app", "https://links.herlastsight.com", "https://be-cpde7aopyq-uc.a.run.app", 'https://herlastsight.com', 'https://s.herlastsight.com']
@@ -27,6 +29,7 @@ app.set('trust proxy', true)
 app.use('/login', login_route)
 app.use('/platforms', platforms_route)
 app.use('/oauth', oauth_route)
+app.use('/tiktok', tiktok_route)
 app.get('/', (req, res) => {
     res.send("HLS")
 })

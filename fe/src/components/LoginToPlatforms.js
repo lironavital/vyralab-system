@@ -42,7 +42,6 @@ export default function LoginToPlatforms({ }) {
 
     useEffect(() => {
         getLoggedPlatformsStatus()
-
         loadFacebookSDK();
     }, []);
 
@@ -64,21 +63,30 @@ export default function LoginToPlatforms({ }) {
         }, { scope: 'public_profile,email' });
     };
 
-
-    const handleTikTokLogin = () => {
-        const tiktokAuthUrl = `https://www.tiktok.com/v2/auth/authorize/?client_key=${config.tiktok_client_key}&scope=user.info.basic,video.upload,artist.certification.read,artist.certification.update,user.info.profile,user.info.stats,video.list&response_type=code&redirect_uri=${encodeURIComponent(config.tiktok_redirect_uri)}`;
-        window.location.href = tiktokAuthUrl;
-    };
+    async function handleLogout(platform) {
+        const resp = await axios.post(`${config.backend}/platforms/remove`, { platform })
+        window.location.reload()
+    }
 
     return (
         <div>
             {Object.keys(loggedPlatforms).map(platform => {
                 if (!loggedPlatforms[platform]) {
-                    return returnPlatformByName({ platformName: platform, loginFunc: platform === 'facebook' ? handleFacebookLogin : handleTikTokLogin });
+                    let loginFunc = () => { }
+                    switch (platform) {
+                        case 'facebook':
+                            loginFunc = handleFacebookLogin
+                            break;
+                        default:
+                            loginFunc = () => { }
+                            break;
+                    }
+                    return returnPlatformByName({ platformName: platform, loginFunc });
                 } else {
                     return (
                         <div key={platform}>
                             <h1>{platform} Logged!</h1>
+                            <button onClick={() => handleLogout(platform)}>Logout from {platform}</button>
                         </div>
                     );
                 }
@@ -98,7 +106,7 @@ function returnPlatformByName({ platformName, loginFunc }) {
         case 'tiktok':
             return <div key="tiktok">
                 <h1>TikTok Login</h1>
-                <button onClick={loginFunc}>Login with TikTok</button>
+                <button onClick={e => window.location = `${config.backend}/oauth/tiktok`}>Login with TikTok</button>
             </div>
 
         default:

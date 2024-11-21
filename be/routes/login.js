@@ -1,15 +1,15 @@
 const app = require('express').Router()
-const { db, getUserByUsernameAndPassword } = require('../db/localDB')
+const { getUserByEmailAndPassword } = require('../db/postgres')
 const { signJWT } = require('../middlewares/jwt')
 
 app.post('/', async (req, res) => {
     const password = req.body.password
-    const username = req.body.username
+    const email = req.body.email
 
-    const registeredUser = getUserByUsernameAndPassword({ username, password })
+    const registeredUser = await getUserByEmailAndPassword({ email, password })
 
     if (registeredUser) {
-        const token = signJWT({ id: registeredUser.userID, firstName: registeredUser.firstName, lastName: registeredUser.lastName })
+        const token = signJWT({ id: registeredUser.id, firstName: registeredUser.firstname, lastName: registeredUser.lastname })
 
         res.cookie("vyralab_token", token, { httpOnly: true, secure: process.env.NODE_ENV !== "production", sameSite: "Strict" });
 

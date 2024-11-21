@@ -33,15 +33,16 @@ function App() {
 
   useEffect(() => {
     getLoginStatusFromCookie()
-  })
+  }, [])
 
 
   return (
     <div className="App">
       {loggedUser && <button onClick={logout}>Log Out</button>}
       <Routes>
-        {loggedUser ? <Route path="/" element={<Main loggedUser={loggedUser} />} /> : <Route path="/" element={<Login setLoggedUser={setLoggedUser} />} />}
+        {loggedUser ? <Route path="/" element={<Main />} /> : <Route path="/" element={<Login setLoggedUser={setLoggedUser} />} />}
         {loggedUser ? <Route path="/tt_act" element={<TtAct />} /> : <Route path="/" element={<Login setLoggedUser={setLoggedUser} />} />}
+        {!loggedUser && <Route path="/*" element={<Login setLoggedUser={setLoggedUser} />} />}
       </Routes>
     </div>
   );

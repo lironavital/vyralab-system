@@ -9,14 +9,14 @@ export default function TtAct() {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
 
-    async function tiktok_addAccessToken({ token }) {
-        await axios.post(`${config.backend}/platforms/add`, { platform: 'tiktok', resp: { tt_act: token } });
+    async function tiktok_addRefreshToken({ token }) {
+        await axios.post(`${config.backend}/platforms/add`, { platform: 'tiktok', resp: { tt_refresh_token: token } });
         window.location.replace('/')
     }
 
     useEffect(() => {
-        const tt_act = queryParams.get('code')
-        tiktok_addAccessToken({ token: tt_act })
+        const tt_refresh_token = queryParams.get('code')
+        tiktok_addRefreshToken({ token: tt_refresh_token })
     }, [])
 
     return (<div>

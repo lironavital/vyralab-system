@@ -5,7 +5,7 @@ import { getConfig } from '../config/getConfig'
 const config = getConfig()
 
 const Login = ({ setLoggedUser }) => {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -16,14 +16,14 @@ const Login = ({ setLoggedUser }) => {
         setIsLoading(true);
 
         // Simple validation
-        if (!username || !password) {
-            setError('Username and password are required.');
+        if (!email || !password) {
+            setError('Email and password are required.');
             setIsLoading(false);
             return;
         }
 
         try {
-            const response = await axios.post(`${config.backend}/login`, { username, password, }, { withCredentials: true });
+            const response = await axios.post(`${config.backend}/login`, { email, password, }, { withCredentials: true });
             if (response.status === 200) {
                 setLoggedUser(response.data)
             }
@@ -41,8 +41,8 @@ const Login = ({ setLoggedUser }) => {
             <h2>Login</h2>
             <form onSubmit={handleSubmit}>
                 <div style={{ marginBottom: '1vh' }}>
-                    <label>Username:</label>
-                    <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
+                    <label>Email:</label>
+                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                 </div>
                 <div style={{ marginBottom: '1vh' }}>
                     <label>Password:</label>
