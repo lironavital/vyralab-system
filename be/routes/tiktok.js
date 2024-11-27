@@ -6,6 +6,7 @@ const config = getConfig()
 
 app.get('/videos', validateJWT, async (req, res) => {
     try {
+        const TIKTOK_API_BASE = `https://open.tiktokapis.com/v2`
         const videos = []
         const user = req.userData
         const token = user.tt_act
@@ -15,7 +16,7 @@ app.get('/videos', validateJWT, async (req, res) => {
         let cursor = null
 
         while (true) {
-            const response = await axios.post('https://open.tiktokapis.com/v2/video/list/', { "max_count": 20, "cursor": cursor }, {
+            const response = await axios.post(`${TIKTOK_API_BASE}/video/list/`, { "max_count": 20, "cursor": cursor }, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -40,4 +41,43 @@ app.get('/videos', validateJWT, async (req, res) => {
 })
 
 
-module.exports = app 
+module.exports = app
+
+
+
+
+
+
+
+
+
+
+
+// ONCE RESEARCH API IS APPROVED:
+
+// const response = await axios.post(`${TIKTOK_API_BASE}/research/user/info/`, {
+//     username:'liron_hls'
+//     // start_date: '2024-06-01',
+//     // end_date: '2024-11-27',
+// }, {
+//     params: {
+//         fields: [
+//             'profile_view',
+//             'follower_count',
+//             'likes_count',
+//             'video_views',
+//             'comment_count',
+//             'share_count'
+//         ].join(',')
+//     },
+//     headers: {
+//         'Authorization': `Bearer ${token}`,
+//         'Content-Type': 'text/plain'
+//     },
+// });
+
+// return {
+//     date,
+//     dailyStats: response.data.data,
+//     totalFollowers: response.data.data.follower_count
+// };

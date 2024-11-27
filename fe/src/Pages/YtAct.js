@@ -5,20 +5,19 @@ import { getConfig } from '../config/getConfig'
 import { useLocation, useNavigate } from 'react-router-dom'
 const config = getConfig()
 
-export default function TtAct() {
+export default function YtAct() {
     const location = useLocation();
-    const navigate = useNavigate();
-    
+    const navigate = useNavigate()
     const queryParams = new URLSearchParams(location.search);
-    
-    async function tiktok_addRefreshToken({ token }) {
-        await axios.post(`${config.backend}/platforms/add`, { platform: 'tiktok', resp: { tt_refresh_token: token } });
+
+    async function youtube_addRefreshToken({ token }) {
+        await axios.post(`${config.backend}/platforms/add`, { platform: 'youtube', resp: { yt_refresh_token: token } });
         navigate('/')
     }
 
     useEffect(() => {
-        const tt_refresh_token = queryParams.get('code')
-        tiktok_addRefreshToken({ token: tt_refresh_token })
+        const yt_refresh_token = queryParams.get('code')
+        youtube_addRefreshToken({ token: yt_refresh_token })
     }, [])
 
     return (<div>

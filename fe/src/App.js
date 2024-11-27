@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import { getConfig } from "./config/getConfig";
 import axios from "axios";
 import TtAct from "./pages/TtAct";
+import YtAct from "./pages/YtAct";
 const config = getConfig()
 
 axios.defaults.withCredentials = true;
@@ -42,6 +43,7 @@ function App() {
       <Routes>
         {loggedUser ? <Route path="/" element={<Main />} /> : <Route path="/" element={<Login setLoggedUser={setLoggedUser} />} />}
         {loggedUser ? <Route path="/tt_act" element={<TtAct />} /> : <Route path="/" element={<Login setLoggedUser={setLoggedUser} />} />}
+        {loggedUser ? <Route path="/oauth/yt_act" element={<YtAct />} /> : <Route path="/" element={<Login setLoggedUser={setLoggedUser} />} />}
         {!loggedUser && <Route path="/*" element={<Login setLoggedUser={setLoggedUser} />} />}
       </Routes>
     </div>

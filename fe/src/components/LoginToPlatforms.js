@@ -108,6 +108,11 @@ function returnPlatformByName({ platformName, loginFunc }) {
                 <h1>TikTok Login</h1>
                 <button onClick={e => window.location = `${config.backend}/oauth/tiktok`}>Login with TikTok</button>
             </div>
+        case 'youtube':
+            return <div key="youtube">
+                <h1>YouTube Login</h1>
+                <button onClick={e => window.location = `${config.backend}/oauth/youtube`}>Login with YouTube</button>
+            </div>
 
         default:
             return

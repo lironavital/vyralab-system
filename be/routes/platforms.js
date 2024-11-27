@@ -1,9 +1,10 @@
 const app = require('express').Router()
 const { signJWT, validateJWT } = require('../middlewares/jwt')
-const qs = require('qs')
+const qs = require('qs');
 const axios = require('axios');
 const { getUserById, updateUser } = require('../db/postgres')
-const dateFns = require('date-fns')
+const dateFns = require('date-fns');
+const { getYoutubeAccessToken } = require('./oauth');
 
 app.get('/logged', validateJWT, async (req, res) => {
     const loggedPlatforms = {}
@@ -58,6 +59,16 @@ app.post('/add', validateJWT, async (req, res) => {
             }
         }
     }
+    if (data.platform === 'youtube') {
+        if ('yt_refresh_token' in data.resp) {
+            newFields.yt_refresh_token = data.resp.yt_refresh_token
+            const response = await getYoutubeAccessToken(data.resp.yt_refresh_token)
+            newFields.yt_act = response.access_token
+            const expirationTimestamp = new Date(response.expiry_date)
+            const formattedTimestamp = expirationTimestamp.toISOString().slice(0, 19).replace('T', ' ')
+            newFields.yt_act_expire = formattedTimestamp
+        }
+    }
 
     await updateUser(req.userData.id, newFields)
 
@@ -76,6 +87,11 @@ app.post('/remove', validateJWT, async (req, res) => {
         newFields.tt_refresh_token = null
         newFields.tt_act = null
         newFields.tt_act_expire = new Date().toISOString()
+    }
+    if (data.platform === 'youtube') {
+        newFields.yt_refresh_token = null
+        newFields.yt_act = null
+        newFields.yt_act_expire = new Date().toISOString()
     }
 
     await updateUser(req.userData.id, newFields)
