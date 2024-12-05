@@ -8,11 +8,22 @@ import YouTubeInfo from '../components/YouTubeInfo'
 const config = getConfig()
 
 export default function Main({ }) {
+    const [loggedPlatforms, setLoggedPlatforms] = useState({})
+
+    async function getLoggedPlatformsStatus() {
+        const resp = await axios.get(`${config.backend}/platforms/logged`)
+        setLoggedPlatforms(resp.data)
+    }
+
+    useEffect(() => {
+        getLoggedPlatformsStatus()
+    }, [])
+
 
     return (<div>
-        <LoginToPlatforms />
+        <LoginToPlatforms loggedPlatforms={loggedPlatforms} setLoggedPlatforms={setLoggedPlatforms} getLoggedPlatformsStatus={getLoggedPlatformsStatus} />
 
-        <TikTokInfo />
-        <YouTubeInfo />
+        <TikTokInfo getLoggedPlatformsStatus={getLoggedPlatformsStatus} />
+        <YouTubeInfo getLoggedPlatformsStatus={getLoggedPlatformsStatus} />
     </div>)
 }

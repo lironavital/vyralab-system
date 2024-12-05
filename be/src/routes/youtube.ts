@@ -9,6 +9,7 @@ import { AxiosError, isAxiosError } from 'axios';
 import { get_youtube_access_token_from_refresh_token } from '../controllers/youtubeAccessToken';
 import { updateUser } from '../db/postgres';
 import { User } from '../types/global';
+import convert_ISO_8601_to_seconds from '../functions/convert_ISO_8601';
 
 
 const getChannel = async (youtube: youtube_v3.Youtube) => {
@@ -33,7 +34,6 @@ const getVideos = async (youtube: youtube_v3.Youtube, maxResults = 10, pageToken
         return searchResponse.data;
     }
 
-    console.time('getStatistics')
     // Extract video IDs
     const videoIds = searchResponse.data.items.map(item => item.id?.videoId);
 
@@ -42,11 +42,16 @@ const getVideos = async (youtube: youtube_v3.Youtube, maxResults = 10, pageToken
     const filteredVideoIds = videoIds.filter((id): id is string => id !== null && id !== undefined);
 
     const videosConfig = {
-        part: ['snippet', 'statistics' /* 'contentDetails' */],
+        part: ['snippet', 'statistics', 'status', 'contentDetails'],
         id: filteredVideoIds, // Now filtered to only include strings
     };
 
     const videosResponse = await youtube.videos.list(videosConfig) as any;
+
+    videosResponse.data.items.forEach((video: any) => {
+        video.duration = convert_ISO_8601_to_seconds(video.contentDetails.duration)
+        video.type = video.duration > 60 ? 'video' : 'short'
+    })
 
     // Merge the data
     return {
@@ -134,7 +139,7 @@ const getAllVideos = async (req: Request, res: Response) => {
             }
         }
 
-        return res.json(allVideos)
+        return res.json(allVideos.filter(i => i.status.privacyStatus === 'public'))
     }
     else {
         throw { status: 403, message: 'User Not Found' }
@@ -151,6 +156,51 @@ app.get('/videos', validateJWT, async (req, res) => {
                 await updateUser(req.userData.id, { yt_act: token.accessToken, yt_act_expire: token.expire })
                 if (token.accessToken) {
                     await getAllVideos(req, res)
+                }
+                else {
+                    res.status(401).send("User is not logged to YouTube anymore!")
+                }
+            }
+            else {
+                res.status(401).send("User is not logged to YouTube anymore!")
+            }
+        }
+        else {
+            res.status(500).send(err.message)
+        }
+    }
+})
+
+app.get('/generalData', validateJWT, async (req, res) => {
+    try {
+        const user = req.userData
+        const token = user?.yt_act
+        if (!token) {
+            throw { status: 401, message: "User Not Found" }
+        }
+        const auth = new google.auth.OAuth2();
+        auth.setCredentials({ access_token: token });
+        const youtube = google.youtube({
+            version: 'v3',
+            auth, // OAuth2 client
+            key: process.env.youtube_api_key, // API key for identity
+        });
+
+        const resp = await getChannel(youtube)
+        if (resp?.items) {
+            res.json(resp.items[0])
+        }
+        else {
+            res.json({})
+        }
+
+    } catch (err: any) {
+        if (err?.status === 401) {
+            if (req.userData?.yt_refresh_token) {
+                const token = await get_youtube_access_token_from_refresh_token(req.userData.yt_refresh_token)
+                await updateUser(req.userData.id, { yt_act: token.accessToken, yt_act_expire: token.expire })
+                if (token.accessToken) {
+                    // await getAllVideos(req, res)
                 }
                 else {
                     res.status(401).send("User is not logged to YouTube anymore!")

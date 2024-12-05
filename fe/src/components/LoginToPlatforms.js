@@ -4,13 +4,8 @@ import axios from 'axios'
 import { getConfig } from '../config/getConfig'
 const config = getConfig()
 
-export default function LoginToPlatforms({ }) {
-    const [loggedPlatforms, setLoggedPlatforms] = useState({})
+export default function LoginToPlatforms({ loggedPlatforms }) {
 
-    async function getLoggedPlatformsStatus() {
-        const resp = await axios.get(`${config.backend}/platforms/logged`)
-        setLoggedPlatforms(resp.data)
-    }
 
     const loadFacebookSDK = () => {
         if (window.FB) return; // If SDK is already loaded, skip
@@ -41,7 +36,6 @@ export default function LoginToPlatforms({ }) {
     };
 
     useEffect(() => {
-        getLoggedPlatformsStatus()
         loadFacebookSDK();
     }, []);
 
@@ -69,7 +63,8 @@ export default function LoginToPlatforms({ }) {
     }
 
     return (
-        <div>
+        <div style={{ display: 'flex', paddingTop: '5dvw', paddingBottom: '5dvw', width: '100%', gap: '5dvw', justifyContent: 'center', backgroundColor: 'crimson' }}>
+            {/* LOGGED BUTTONS */}
             {Object.keys(loggedPlatforms).map(platform => {
                 if (!loggedPlatforms[platform]) {
                     let loginFunc = () => { }
@@ -84,7 +79,7 @@ export default function LoginToPlatforms({ }) {
                     return returnPlatformByName({ platformName: platform, loginFunc });
                 } else {
                     return (
-                        <div key={platform}>
+                        <div key={platform} style={{ textAlign: 'center' }}>
                             <h1>{platform} Logged!</h1>
                             <button onClick={() => handleLogout(platform)}>Logout from {platform}</button>
                         </div>
@@ -95,21 +90,22 @@ export default function LoginToPlatforms({ }) {
     );
 }
 
+// NOT LOGGED BUTTONS 
 function returnPlatformByName({ platformName, loginFunc }) {
     switch (platformName) {
         case 'facebook':
-            return <div>
+            return <div style={{ textAlign: 'center' }}>
                 <h1>Facebook Login</h1>
                 <button onClick={loginFunc}>Login with Facebook</button>
             </div>
 
         case 'tiktok':
-            return <div key="tiktok">
+            return <div key="tiktok" style={{ textAlign: 'center' }}>
                 <h1>TikTok Login</h1>
                 <button onClick={e => window.location = `${config.backend}/oauth/tiktok`}>Login with TikTok</button>
             </div>
         case 'youtube':
-            return <div key="youtube">
+            return <div key="youtube" style={{ textAlign: 'center' }}>
                 <h1>YouTube Login</h1>
                 <button onClick={e => window.location = `${config.backend}/oauth/youtube`}>Login with YouTube</button>
             </div>

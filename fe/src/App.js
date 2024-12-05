@@ -45,7 +45,7 @@ function App() {
 
   return (
     <div className="App">
-      {loggedUser && <button onClick={logout}>Log Out</button>}
+      {loggedUser && <button style={{ position: 'absolute', right: '0' }} onClick={logout}>Log Out</button>}
       <ToastContainer position="bottom-center" />
       <Routes>
         {loggedUser ? <Route path="/" element={<Main />} /> : <Route path="/" element={<Login setLoggedUser={setLoggedUser} />} />}
