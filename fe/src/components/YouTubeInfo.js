@@ -2,14 +2,21 @@ import { useEffect, useState } from 'react'
 import '../main.css'
 import axios from 'axios'
 import { getConfig } from '../config/getConfig'
+import { toast } from 'react-toastify'
 const config = getConfig()
 
 export default function YouTubeInfo({ }) {
     const [videosData, setVideosData] = useState([])
 
     async function getYoutubeVideos() {
-        const resp = await axios.get(`${config.backend}/youtube/videos`)
-        setVideosData(resp.data)
+        try {
+            const resp = await axios.get(`${config.backend}/youtube/videos`)
+            setVideosData(resp.data)
+        } catch (error) {
+            if (error?.response?.data) {
+                toast.error(error.response.data)
+            }
+        }
     }
     return (
         <div style={{ marginTop: '100px' }}>

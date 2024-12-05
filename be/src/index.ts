@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 const app = express()
 import { config } from 'dotenv';
 config()
@@ -6,14 +6,11 @@ import cors from "cors";
 import cookieParser from 'cookie-parser';
 import login_route from './routes/login'
 import { app as oauth_route } from './routes/oauth'
-// const platforms_route = require('./routes/platforms')
 import platforms_route from './routes/platforms'
 import tiktok_route from './routes/tiktok'
 import youtube_route from './routes/youtube'
 // const ip2loc = require("ip2location-nodejs");
-// const path = require('path')
 import path from 'path';
-// const pg = require('./db/postgres')
 require('./db/postgres')
 
 //NODE SETTINGS

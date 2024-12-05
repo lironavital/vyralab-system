@@ -6,6 +6,9 @@ import { getConfig } from "./config/getConfig";
 import axios from "axios";
 import TtAct from "./pages/TtAct";
 import YtAct from "./pages/YtAct";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const config = getConfig()
 
 axios.defaults.withCredentials = true;
@@ -20,8 +23,11 @@ function App() {
         setLoggedUser(true)
       }
     } catch (error) {
-      if (error.response.status === 401) {
+      if (error?.response?.status !== 401) {
         console.log("User isn't logged in.")
+      }
+      else {
+        toast.error(error.message)
       }
     }
   }
@@ -40,6 +46,7 @@ function App() {
   return (
     <div className="App">
       {loggedUser && <button onClick={logout}>Log Out</button>}
+      <ToastContainer position="bottom-center" />
       <Routes>
         {loggedUser ? <Route path="/" element={<Main />} /> : <Route path="/" element={<Login setLoggedUser={setLoggedUser} />} />}
         {loggedUser ? <Route path="/tt_act" element={<TtAct />} /> : <Route path="/" element={<Login setLoggedUser={setLoggedUser} />} />}
