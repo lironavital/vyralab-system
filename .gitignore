@@ -1,7 +1,11 @@
 be/node_modules
 be/.env
-be/creds
+be/src/creds
+
+be-js/node_modules
+be-js/db/db.json
+be-js/.env
+be-js/creds
 
 fe/node_modules
 fe/.env
-be/db/db.json
