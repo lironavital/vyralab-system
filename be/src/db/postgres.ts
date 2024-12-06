@@ -1,5 +1,5 @@
 import { Pool } from 'pg';
-import { User } from '../types/global';
+import { User, Video } from '../types/global';
 
 const pool = new Pool({
     user: 'lironavital',
@@ -58,4 +58,28 @@ async function updateUser(userID: number, updatedFields: Partial<{ fb_act: strin
     }
 }
 
-export { getUserById, addUser, updateUser, getUserByEmailAndPassword };
+async function addVideo(video: Video) {
+    const keys = [
+        "user_id",
+        "video_id",
+        "title",
+        "description",
+        "thumbnail_url",
+        "platform",
+        "created_at",
+        "duration",
+        "comments",
+        "likes",
+        "dislikes",
+        "shares",
+        "views",
+        "saves",
+    ] as (keyof Video)[];
+    const values = keys.map((key) => video[key]);
+    const placeholders = keys.map((_, index) => `$${index + 1}`).join(',');
+    const query = `INSERT INTO videos (${keys.join(',')}) VALUES (${placeholders}) RETURNING *;`;
+    const result = await pool.query(query, values);
+    return result.rows[0];
+}
+
+export { getUserById, addUser, updateUser, getUserByEmailAndPassword, addVideo };

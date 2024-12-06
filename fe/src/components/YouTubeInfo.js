@@ -52,42 +52,49 @@ export default function YouTubeInfo({ getLoggedPlatformsStatus }) {
 }
 
 function VideoDataComponent({ data }) {
-    return data.map(video => {
-        const bestImageURL = video?.snippet?.thumbnails?.standard?.url ? video?.snippet?.thumbnails?.standard?.url : video?.snippet?.thumbnails?.default?.url
-        return <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '1dvw' }}>
-            <img src={bestImageURL} style={{ width: "10%", minWidth: '150px' }} alt={video.title} />
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
-                    <label>Video ID:</label>
-                    <label>{video.id}</label>
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
-                    <label>Video Link:</label>
-                    <a href={`https://youtube.com/watch?v=${video.id}`} target='_blank' rel="noreferrer">{video.id}</a>
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
-                    <label>Title:</label>
-                    <label>{video.snippet.title}</label>
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
-                    <label>Views:</label>
-                    <label>{video.statistics.viewCount}</label>
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
-                    <label>Likes:</label>
-                    <label>{video.statistics.likeCount}</label>
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
-                    <label>Dislikes:</label>
-                    <label>{video.statistics.dislikeCount}</label>
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
-                    <label>Comments:</label>
-                    <label>{video.statistics.commentCount}</label>
+    return <div style={{}}>
+        {data.map(video => {
+            const infoStyle = { display: 'flex', flexDirection: 'row', gap: '0.3dvw', }
+            const videoURL = `https://youtube.com/watch?v=${video.video_id}`
+            return <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '1dvw', marginBottom: '2dvh' }}>
+                <img src={video.thumbnail_url} style={{ width: "10%", minWidth: '150px' }} alt={video.title} />
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <div style={infoStyle}>
+                        <label>Video ID:</label>
+                        <label>{video.video_id}</label>
+                    </div>
+                    <div style={infoStyle}>
+                        <label>Video Link:</label>
+                        <a href={videoURL} target='_blank' rel="noreferrer">{videoURL}</a>
+                    </div>
+                    <div style={infoStyle}>
+                        <label>Title:</label>
+                        <label>{video.title}</label>
+                    </div>
+                    <div style={infoStyle}>
+                        <label>Duration:</label>
+                        <label>{video.duration}s</label>
+                    </div>
+                    <div style={infoStyle}>
+                        <label>Views:</label>
+                        <label>{video.views}</label>
+                    </div>
+                    <div style={infoStyle}>
+                        <label>Likes:</label>
+                        <label>{video.likes}</label>
+                    </div>
+                    <div style={infoStyle}>
+                        <label>Dislikes:</label>
+                        <label>{video.dislikes}</label>
+                    </div>
+                    <div style={infoStyle}>
+                        <label>Comments:</label>
+                        <label>{video.comments}</label>
+                    </div>
                 </div>
             </div>
-        </div>
-    })
+        })}
+    </div>
 }
 
 function GeneralDataComponent({ data }) {

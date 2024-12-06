@@ -25,6 +25,99 @@ export type decodedTokenData = {
   iat: number;
 }
 
+export type Video = {
+  user_id: string; // Primary key
+  video_id: string;
+  title: string;
+  description: string;
+  thumbnail_url: string;
+  platform: string;
+  created_at: string; // Assuming ISO 8601 formatted date string
+  duration: number; // Integer type
+  comments: number; // Integer type
+  likes: number; // Integer type
+  dislikes: number; // Integer type
+  shares: number; // Integer type
+  views: number; // Integer type
+  saves: number; // Integer type
+};
+
+export type YouTubeVideo = {
+  kind: string;
+  etag: string;
+  id: string;
+  snippet: {
+      publishedAt: string;
+      channelId: string;
+      title: string;
+      description: string;
+      thumbnails: {
+          default: {
+              url: string;
+              width: number;
+              height: number;
+          };
+          medium: {
+              url: string;
+              width: number;
+              height: number;
+          };
+          high: {
+              url: string;
+              width: number;
+              height: number;
+          };
+          standard?: {
+              url: string;
+              width: number;
+              height: number;
+          };
+          maxres?: {
+              url: string;
+              width: number;
+              height: number;
+          };
+      };
+      channelTitle: string;
+      tags?: string[];
+      categoryId: string;
+      liveBroadcastContent: string;
+      localized: {
+          title: string;
+          description: string;
+      };
+      defaultAudioLanguage?: string;
+  };
+  contentDetails: {
+      duration: string;
+      dimension: string;
+      definition: string;
+      caption: string;
+      licensedContent: boolean;
+      contentRating: Record<string, unknown>;
+      projection: string;
+      hasCustomThumbnail: boolean;
+  };
+  status: {
+      uploadStatus: string;
+      privacyStatus: string;
+      license: string;
+      embeddable: boolean;
+      publicStatsViewable: boolean;
+      madeForKids: boolean;
+      selfDeclaredMadeForKids: boolean;
+  };
+  statistics: {
+      viewCount: string;
+      likeCount: string;
+      dislikeCount?: string;
+      favoriteCount: string;
+      commentCount: string;
+  };
+  duration: number;
+  type: string;
+};
+
 declare global {
   namespace Express {
     interface Request {
