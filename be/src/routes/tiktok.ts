@@ -3,6 +3,9 @@ const app = Router()
 import { signJWT, validateJWT } from '../middlewares/jwt';
 import axios from 'axios';
 import { getConfig } from '../config/getConfig';
+import { formatTikTokVideos } from '../functions/format_videos';
+import { get_tiktok_access_token_from_refresh_token } from '../controllers/tiktokAccessToken';
+import { addVideoArray, updateUser } from '../db/postgres';
 const config = getConfig()
 
 app.get('/videos', validateJWT, async (req: Request, res: Response) => {
@@ -35,14 +38,32 @@ app.get('/videos', validateJWT, async (req: Request, res: Response) => {
                 cursor = response.data.data.cursor
             }
 
-            res.json(videos)
+            const formattedVideos = formatTikTokVideos(videos, user)
+            await addVideoArray(formattedVideos)
+            res.json(formattedVideos)
         }
         else {
             throw { status: 401, message: "User Not Found" }
         }
     } catch (error: any) {
         if (error.status === 401) {
-            debugger
+            if (req.userData?.tt_refresh_token) {
+                const token = await get_tiktok_access_token_from_refresh_token(req.userData?.tt_refresh_token)
+                if (token.accessToken) {
+                    // try {
+                    //     const allVideos = await getAllVideos(req.userData)
+                    //     res.json(allVideos)
+                    // } catch (error: any) {
+                    //     res.status(500).send(error.message)
+                    // }
+                    res.status(500).send("Try Again")
+                }
+                else {
+
+                }
+                await updateUser(req.userData.id, { tt_act: token.accessToken, tt_act_expire: token.expire })
+            }
+
         }
         else {
             res.status(400).send(error.message)

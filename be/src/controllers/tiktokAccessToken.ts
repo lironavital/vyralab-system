@@ -1,15 +1,14 @@
 import axios from 'axios'
 import dateFns from 'date-fns'
 import QueryString from 'qs'
-
-async function get_tiktok_access_token_from_refresh_token(refreshToken: string): Promise<{ accessToken: string, expire: string }> {
-    const responseObject = { accessToken: '', expire: '' }
+async function get_tiktok_access_token_from_refresh_token(refreshToken: string): Promise<{ accessToken: string | null, expire: string | null }> {
+    const responseObject = { accessToken: null, expire: null } as { accessToken: string | null, expire: string | null }
     const response = await getTikTokAccessToken({ tt_refresh_token: refreshToken })
     if (response) {
         const expirationTimeInSeconds = response.tt_act_expire
         const expirationTimestamp = dateFns.addSeconds(new Date(), expirationTimeInSeconds)
         const formattedTimestamp = expirationTimestamp.toISOString().slice(0, 19).replace('T', ' ')
-        
+
         responseObject.accessToken = response.tt_act
         responseObject.expire = formattedTimestamp
     }
@@ -36,6 +35,7 @@ async function getTikTokAccessToken({ tt_refresh_token }: { tt_refresh_token: st
             return { tt_act: response.data.access_token, tt_act_expire: response.data.expires_in }
         }
         else {
+            console.log(response.data.error, response.data.error_description)
             return false
         }
     } catch (error) {

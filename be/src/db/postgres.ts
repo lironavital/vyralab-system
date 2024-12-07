@@ -35,7 +35,7 @@ async function addUser(user: User) {
     return result.rows[0];
 }
 
-async function updateUser(userID: number, updatedFields: Partial<{ fb_act: string | null, fb_act_expire: string | null, tt_act: string | null, tt_act_expire: string | null, yt_act: string | null, yt_act_expire: string | null, [key: string]: any; }>) {
+async function updateUser(userID: string, updatedFields: Partial<{ fb_act: string | null, fb_act_expire: string | null, tt_act: string | null, tt_act_expire: string | null, yt_act: string | null, yt_act_expire: string | null, [key: string]: any; }>) {
     const changingString = Object.keys(updatedFields).map((field: string) => {
         if (typeof updatedFields[field] === 'string') {
             return `${field}='${updatedFields[field]}'`
@@ -58,6 +58,17 @@ async function updateUser(userID: number, updatedFields: Partial<{ fb_act: strin
     }
 }
 
+async function addVideoArray(videos: Array<Video>) {
+    try {
+        for (const vid of videos) {
+            await addVideo(vid)
+        }
+        return true
+    } catch (error: any) {
+        console.log(error.message)
+        return false
+    }
+}
 async function addVideo(video: Video) {
     const keys = [
         "user_id",
@@ -77,9 +88,21 @@ async function addVideo(video: Video) {
     ] as (keyof Video)[];
     const values = keys.map((key) => video[key]);
     const placeholders = keys.map((_, index) => `$${index + 1}`).join(',');
-    const query = `INSERT INTO videos (${keys.join(',')}) VALUES (${placeholders}) RETURNING *;`;
+
+    // Dynamically create the update clause for upsert
+    const updateClause = keys.map(key => `${key} = EXCLUDED.${key}`).join(', ');
+
+    // Assuming the conflict target is "video_id"
+    const query = `
+        INSERT INTO videos (${keys.join(',')})
+        VALUES (${placeholders})
+        ON CONFLICT (video_id) DO UPDATE
+        SET ${updateClause}
+        RETURNING *;
+    `;
+
     const result = await pool.query(query, values);
     return result.rows[0];
 }
 
-export { getUserById, addUser, updateUser, getUserByEmailAndPassword, addVideo };
+export { getUserById, addUser, updateUser, getUserByEmailAndPassword, addVideo, addVideoArray };

@@ -7,10 +7,11 @@ import { google, youtube_v3 } from 'googleapis'
 import { OAuth2Client } from 'google-auth-library';
 import { AxiosError, isAxiosError } from 'axios';
 import { get_youtube_access_token_from_refresh_token } from '../controllers/youtubeAccessToken';
-import { addVideo, updateUser } from '../db/postgres';
+import { addVideo, addVideoArray, updateUser } from '../db/postgres';
 import { User, YouTubeVideo } from '../types/global';
 import convert_ISO_8601_to_seconds from '../functions/convert_ISO_8601';
 import fs from 'fs'
+import { formatYouTubeVideos } from '../functions/format_videos';
 
 const getChannel = async (youtube: youtube_v3.Youtube) => {
     const response = await youtube.channels.list({
@@ -109,77 +110,51 @@ const getChannelStatsByDate = async (youtube: youtube_v3.Youtube, auth: OAuth2Cl
 };
 
 
-const getAllVideos = async (req: Request, res: Response) => {
-    const user = req.userData
-    if (user) {
-        const allVideos = []
-        const token = user.yt_act
-        if (!token) {
-            throw { status: 401, message: "User Not Found" }
-        }
-        const auth = new google.auth.OAuth2();
-        auth.setCredentials({ access_token: token });
-        const youtube = google.youtube({
-            version: 'v3',
-            auth, // OAuth2 client
-            key: process.env.youtube_api_key, // API key for identity
-        });
-
-        // const channels = await getChannel(youtube)
-        // const resp = await getChannelStatsByDate(youtube, auth, '2020-01-01', '2024-11-27')
-        let pagingToken = '1'
-        while (pagingToken) {
-            const videos = await getVideos(youtube, 100, pagingToken)
-            allVideos.push(...videos.items)
-            if (videos.nextPageToken) {
-                pagingToken = videos.nextPageToken
-            }
-            else {
-                pagingToken = ''
-            }
-        }
-
-        // await fs.writeFileSync('./youtube.json', JSON.stringify(allVideos.filter(i => i.status.privacyStatus === 'public')), { encoding: 'utf-8' })
-
-        return res.json(allVideos.filter(i => i.status.privacyStatus === 'public'))
+const getAllVideos = async (user: User) => {
+    const allVideos = []
+    const token = user.yt_act
+    if (!token) {
+        throw { status: 401, message: "User Not Found" }
     }
-    else {
-        throw { status: 403, message: 'User Not Found' }
+    const auth = new google.auth.OAuth2();
+    auth.setCredentials({ access_token: token });
+    const youtube = google.youtube({
+        version: 'v3',
+        auth, // OAuth2 client
+        key: process.env.youtube_api_key, // API key for identity
+    });
+
+    // const channels = await getChannel(youtube)
+    // const resp = await getChannelStatsByDate(youtube, auth, '2020-01-01', '2024-11-27')
+    let pagingToken = '1'
+    while (pagingToken) {
+        const videos = await getVideos(youtube, 100, pagingToken)
+        allVideos.push(...videos.items)
+        if (videos.nextPageToken) {
+            pagingToken = videos.nextPageToken
+        }
+        else {
+            pagingToken = ''
+        }
     }
+
+    // await fs.writeFileSync('./youtube.json', JSON.stringify(allVideos.filter(i => i.status.privacyStatus === 'public')), { encoding: 'utf-8' })
+
+    return allVideos.filter(i => i.status.privacyStatus === 'public')
 }
 
 
 app.get('/videos', validateJWT, async (req: Request, res: Response) => {
     try {
-        // await getAllVideos(req, res)
-        // const file = await fs.readFileSync('./youtube.json')
-        // const data = JSON.parse(file.toString())
         const user = req.userData
         if (user) {
-            const data = require('../../youtube.json')
-            const formattedVideos = data.map((video: YouTubeVideo) => {
-                return {
-                    user_id: user.id,
-                    video_id: video.id,
-                    title: video.snippet.title,
-                    description: video.snippet.description,
-                    thumbnail_url: video.snippet.thumbnails?.standard ? video.snippet.thumbnails.standard.url : video.snippet.thumbnails.default.url,
-                    platform: "youtube",
-                    created_at: video.snippet.publishedAt,
-                    duration: convert_ISO_8601_to_seconds(video.contentDetails.duration),
-                    comments: video.statistics.commentCount,
-                    likes: video.statistics.likeCount,
-                    dislikes: video.statistics.dislikeCount,
-                    shares: 0,
-                    views: video.statistics.viewCount,
-                    saves: video.statistics.favoriteCount,
-                }
-            })
-            console.time('postgres')
-            for (const vid of formattedVideos) {
-                await addVideo(vid)
-            }
-            console.timeEnd('postgres')
+            // const allVideos = await getAllVideos(user)
+            // res.json(allVideos)
+            // const file = await fs.readFileSync('./youtube.json')
+            // const data = JSON.parse(file.toString())
+            const allVideos = require('../../youtube.json')
+            const formattedVideos = formatYouTubeVideos(allVideos, user)
+            await addVideoArray(formattedVideos)
             res.json(formattedVideos)
         }
         else {
@@ -192,7 +167,12 @@ app.get('/videos', validateJWT, async (req: Request, res: Response) => {
                 const token = await get_youtube_access_token_from_refresh_token(req.userData.yt_refresh_token)
                 await updateUser(req.userData.id, { yt_act: token.accessToken, yt_act_expire: token.expire })
                 if (token.accessToken) {
-                    await getAllVideos(req, res)
+                    try {
+                        const allVideos = await getAllVideos(req.userData)
+                        res.json(allVideos)
+                    } catch (error: any) {
+                        res.status(500).send(error.message)
+                    }
                 }
                 else {
                     res.status(401).send("User is not logged to YouTube anymore!")

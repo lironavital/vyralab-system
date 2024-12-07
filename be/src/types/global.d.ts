@@ -1,5 +1,5 @@
 export type User = {
-  id: number;
+  id: string;
   email: string;
   password: string;
   password_hash?: string;
@@ -47,76 +47,92 @@ export type YouTubeVideo = {
   etag: string;
   id: string;
   snippet: {
-      publishedAt: string;
-      channelId: string;
+    publishedAt: string;
+    channelId: string;
+    title: string;
+    description: string;
+    thumbnails: {
+      default: {
+        url: string;
+        width: number;
+        height: number;
+      };
+      medium: {
+        url: string;
+        width: number;
+        height: number;
+      };
+      high: {
+        url: string;
+        width: number;
+        height: number;
+      };
+      standard?: {
+        url: string;
+        width: number;
+        height: number;
+      };
+      maxres?: {
+        url: string;
+        width: number;
+        height: number;
+      };
+    };
+    channelTitle: string;
+    tags?: string[];
+    categoryId: string;
+    liveBroadcastContent: string;
+    localized: {
       title: string;
       description: string;
-      thumbnails: {
-          default: {
-              url: string;
-              width: number;
-              height: number;
-          };
-          medium: {
-              url: string;
-              width: number;
-              height: number;
-          };
-          high: {
-              url: string;
-              width: number;
-              height: number;
-          };
-          standard?: {
-              url: string;
-              width: number;
-              height: number;
-          };
-          maxres?: {
-              url: string;
-              width: number;
-              height: number;
-          };
-      };
-      channelTitle: string;
-      tags?: string[];
-      categoryId: string;
-      liveBroadcastContent: string;
-      localized: {
-          title: string;
-          description: string;
-      };
-      defaultAudioLanguage?: string;
+    };
+    defaultAudioLanguage?: string;
   };
   contentDetails: {
-      duration: string;
-      dimension: string;
-      definition: string;
-      caption: string;
-      licensedContent: boolean;
-      contentRating: Record<string, unknown>;
-      projection: string;
-      hasCustomThumbnail: boolean;
+    duration: string;
+    dimension: string;
+    definition: string;
+    caption: string;
+    licensedContent: boolean;
+    contentRating: Record<string, unknown>;
+    projection: string;
+    hasCustomThumbnail: boolean;
   };
   status: {
-      uploadStatus: string;
-      privacyStatus: string;
-      license: string;
-      embeddable: boolean;
-      publicStatsViewable: boolean;
-      madeForKids: boolean;
-      selfDeclaredMadeForKids: boolean;
+    uploadStatus: string;
+    privacyStatus: string;
+    license: string;
+    embeddable: boolean;
+    publicStatsViewable: boolean;
+    madeForKids: boolean;
+    selfDeclaredMadeForKids: boolean;
   };
   statistics: {
-      viewCount: string;
-      likeCount: string;
-      dislikeCount?: string;
-      favoriteCount: string;
-      commentCount: string;
+    viewCount: string;
+    likeCount: string;
+    dislikeCount?: string;
+    favoriteCount: string;
+    commentCount: string;
   };
   duration: number;
   type: string;
 };
+
+export type TikTokPost = {
+  comment_count: number;
+  cover_image_url: string;
+  create_time: number; // Unix timestamp
+  duration: number;
+  height: number;
+  id: string; // Unique identifier
+  like_count: number;
+  share_count: number;
+  title: string;
+  video_description: string;
+  view_count: number;
+  width: number;
+};
+
 
 declare global {
   namespace Express {
