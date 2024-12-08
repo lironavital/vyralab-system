@@ -1,3 +1,4 @@
 {
-    "frontend": "http://localhost:3000"
+    "frontend": "http://localhost:3000",
+    "youtube_data_freshness_seconds": 43200
 }

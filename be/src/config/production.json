@@ -1,3 +1,4 @@
 {
-    "frontend": "https://herlastsight.com"
+    "frontend": "https://herlastsight.com",
+    "youtube_data_freshness_seconds": 43200
 }

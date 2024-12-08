@@ -105,4 +105,22 @@ async function addVideo(video: Video) {
     return result.rows[0];
 }
 
-export { getUserById, addUser, updateUser, getUserByEmailAndPassword, addVideo, addVideoArray };
+async function getVideosByUserAndPlatform(userID: string, platform: string) {
+    const query = `SELECT * FROM videos WHERE user_id='${userID}' AND platform='${platform}' ORDER BY created_at DESC;`;
+    const result = await pool.query(query);
+    return result.rows;
+}
+
+async function getDataFreshnessByUserAndPlatform(userID: string, platform: string) {
+    const result = await pool.query(`SELECT * FROM data_freshness WHERE user_id='${userID}' AND platform='${platform}';`);
+    return result.rows[0];
+}
+
+async function setDataFreshnessByUserAndPlatform(userID: string, platform: string) {
+    const timeNow = new Date().toISOString().slice(0, 19).replace('T', ' ')
+    const query = `INSERT INTO data_freshness (user_id, platform, data_freshness) VALUES (${userID},'${platform}', '${timeNow}');`
+    const result = await pool.query(query);
+    return result.rows[0];
+}
+
+export { getUserById, addUser, updateUser, getUserByEmailAndPassword, addVideo, addVideoArray, getDataFreshnessByUserAndPlatform, setDataFreshnessByUserAndPlatform, getVideosByUserAndPlatform };

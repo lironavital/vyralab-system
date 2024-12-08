@@ -1,5 +1,4 @@
 export default function SingleVideo({ video }) {
-
     const infoStyle = { display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '0.3dvw', }
 
     const { platform } = video
@@ -37,19 +36,19 @@ export default function SingleVideo({ video }) {
             </div>
             <div style={infoStyle}>
                 <label>Views:</label>
-                <label>{video.views.toLocaleString()}</label>
+                <label>{(+video.views).toLocaleString()}</label>
             </div>
             <div style={infoStyle}>
                 <label>Likes:</label>
-                <label>{video.likes.toLocaleString()}</label>
+                <label>{(+video.likes).toLocaleString()}</label>
             </div>
             {platform === "youtube" && <div style={infoStyle}>
                 <label>Dislikes:</label>
-                <label>{video.dislikes.toLocaleString()}</label>
+                <label>{(+video.dislikes).toLocaleString()}</label>
             </div>}
             <div style={infoStyle}>
                 <label>Comments:</label>
-                <label>{video.comments.toLocaleString()}</label>
+                <label>{(+video.comments).toLocaleString()}</label>
             </div>
         </div>
     </div>
