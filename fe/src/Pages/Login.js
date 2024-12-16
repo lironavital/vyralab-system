@@ -25,9 +25,12 @@ const Login = ({ setLoggedUser }) => {
         try {
             const response = await axios.post(`${config.backend}/login`, { email, password, }, { withCredentials: true });
             if (response.status === 200) {
-                setLoggedUser(response.data)
+                const userData = response.data
+                setLoggedUser(userData)
+                localStorage.setItem('vyralab_userData', JSON.stringify(userData))
+                debugger
+                console.log('Login successful:', userData);
             }
-            console.log('Login successful:', response.data);
         } catch (error) {
             console.error('Error during login:', error);
             setError('Login failed. Please check your credentials.');

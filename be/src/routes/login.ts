@@ -15,7 +15,8 @@ app.post('/', async (req: Request, res: Response) => {
         const registeredUser = await getUserByEmailAndPassword({ email, password }) as User;
 
         if (registeredUser) {
-            const token = signJWT({ id: registeredUser.id, firstName: registeredUser.firstname, lastName: registeredUser.lastname })
+            const tokenObject = { id: registeredUser.id, firstName: registeredUser.firstname, lastName: registeredUser.lastname }
+            const token = signJWT(tokenObject)
 
             res.cookie("vyralab_token", token, {
                 httpOnly: true,
@@ -24,7 +25,7 @@ app.post('/', async (req: Request, res: Response) => {
                 maxAge: 24 * 60 * 60 * 1000, // Set cookie expiration (e.g., 24 hours)
             });
 
-            res.status(200).send("User is logged in!");
+            res.status(200).json(tokenObject);
         }
         else {
             res.sendStatus(401)

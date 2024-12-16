@@ -8,6 +8,8 @@ import TtAct from "./pages/TtAct";
 import YtAct from "./pages/YtAct";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Header from "./components/Header";
+import TikTok from "./pages/TikTok";
 
 const config = getConfig()
 
@@ -20,7 +22,8 @@ function App() {
     try {
       const loginResp = await axios.get(`${config.backend}/login/status`)
       if (loginResp.status === 200) {
-        setLoggedUser(true)
+        const data = localStorage.getItem('vyralab_userData')
+        setLoggedUser(JSON.parse(data))
       }
     } catch (error) {
       if (error?.response?.status !== 401) {
@@ -32,12 +35,6 @@ function App() {
     }
   }
 
-  async function logout() {
-    await axios.delete(`${config.backend}/login`)
-    setLoggedUser(false)
-  }
-
-
   useEffect(() => {
     getLoginStatusFromCookie()
   }, [])
@@ -45,10 +42,14 @@ function App() {
 
   return (
     <div className="App">
-      {loggedUser && <button style={{ position: 'absolute', right: '0' }} onClick={logout}>Log Out</button>}
       <ToastContainer position="bottom-center" />
+      <header><Header loggedUser={loggedUser} setLoggedUser={setLoggedUser} /></header>
+
       <Routes>
         {loggedUser ? <Route path="/" element={<Main />} /> : <Route path="/" element={<Login setLoggedUser={setLoggedUser} />} />}
+        {loggedUser ? <Route path="/tiktok" element={<TikTok />} /> : <Route path="/" element={<Login setLoggedUser={setLoggedUser} />} />}
+
+
         {loggedUser ? <Route path="/tt_act" element={<TtAct />} /> : <Route path="/" element={<Login setLoggedUser={setLoggedUser} />} />}
         {loggedUser ? <Route path="/oauth/yt_act" element={<YtAct />} /> : <Route path="/" element={<Login setLoggedUser={setLoggedUser} />} />}
         {!loggedUser && <Route path="/*" element={<Login setLoggedUser={setLoggedUser} />} />}
