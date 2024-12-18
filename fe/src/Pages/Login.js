@@ -40,19 +40,19 @@ const Login = ({ setLoggedUser }) => {
     };
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', height: '100vh', alignItems: "center", flexDirection: 'column' }}>
+        <div style={{}}>
             <h2>Login</h2>
-            <form onSubmit={handleSubmit}>
-                <div style={{ marginBottom: '1vh' }}>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '2vh' }}>
                     <label>Email:</label>
                     <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                 </div>
-                <div style={{ marginBottom: '1vh' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '2vh' }}>
                     <label>Password:</label>
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                 </div>
                 {error && <p style={{ color: 'red' }}>{error}</p>}
-                <button type="submit" disabled={isLoading}>
+                <button style={{ padding: '10px' }} type="submit" disabled={isLoading}>
                     {isLoading ? 'Logging in...' : 'Login'}
                 </button>
             </form>

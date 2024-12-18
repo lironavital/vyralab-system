@@ -22,7 +22,7 @@ app.get('/videos', validateJWT, async (req: Request, res: Response) => {
             const timeNowUTC = new Date().toISOString(); // Current UTC time
             const dataFreshnessUTC = dateFns.format(new Date(data_freshness), 'yyyy-MM-dd HH:mm:ss').replace(' ', 'T') + '.422Z'
             const diff = dateFns.differenceInSeconds(timeNowUTC, dataFreshnessUTC)
-            if (data_freshness && diff < config.youtube_data_freshness_seconds) { // Data is older than what has been set as a threshold
+            if (data_freshness && diff > config.youtube_data_freshness_seconds) { // Data is older than what has been set as a threshold
                 const savedVideos = await getVideosByUserAndPlatform(user.id, 'youtube')
                 res.json(savedVideos)
             }

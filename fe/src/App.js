@@ -10,13 +10,18 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Header from "./components/Header";
 import TikTok from "./pages/TikTok";
+import Sidebar from "./components/Sidebar";
+import Youtube from "./pages/Youtube";
+import '../src/main.css'
 
 const config = getConfig()
-
 axios.defaults.withCredentials = true;
+
+const headerHeight = '60px'
 
 function App() {
   const [loggedUser, setLoggedUser] = useState(false)
+  const [sidebarWidth, setSidebarWidth] = useState('300px')
 
   async function getLoginStatusFromCookie() {
     try {
@@ -41,19 +46,31 @@ function App() {
 
 
   return (
-    <div className="App">
+    <div style={{ display: 'flex', flexDirection: 'column', overflowY: 'hidden', }}>
       <ToastContainer position="bottom-center" />
-      <header><Header loggedUser={loggedUser} setLoggedUser={setLoggedUser} /></header>
-
-      <Routes>
-        {loggedUser ? <Route path="/" element={<Main />} /> : <Route path="/" element={<Login setLoggedUser={setLoggedUser} />} />}
-        {loggedUser ? <Route path="/tiktok" element={<TikTok />} /> : <Route path="/" element={<Login setLoggedUser={setLoggedUser} />} />}
-
-
-        {loggedUser ? <Route path="/tt_act" element={<TtAct />} /> : <Route path="/" element={<Login setLoggedUser={setLoggedUser} />} />}
-        {loggedUser ? <Route path="/oauth/yt_act" element={<YtAct />} /> : <Route path="/" element={<Login setLoggedUser={setLoggedUser} />} />}
-        {!loggedUser && <Route path="/*" element={<Login setLoggedUser={setLoggedUser} />} />}
-      </Routes>
+      <header>
+        <Header loggedUser={loggedUser} setLoggedUser={setLoggedUser} headerHeight={headerHeight} />
+      </header>
+      <div style={{ display: 'flex', height: `calc(100vh - ${headerHeight})`, flex: '1 1 auto' }}>
+        <nav>
+          <Sidebar sidebarWidth={sidebarWidth} setSidebarWidth={setSidebarWidth} />
+        </nav>
+        <main style={{ padding: '20px', overflowY: 'auto', marginLeft: 'auto', flex: '1 1 auto' }}>
+          <Routes>
+            {loggedUser ? (
+              <>
+                <Route path="/" element={<Main />} />
+                <Route path="/tiktok" element={<TikTok />} />
+                <Route path="/youtube" element={<Youtube />} />
+                <Route path="/tt_act" element={<TtAct />} />
+                <Route path="/oauth/yt_act" element={<YtAct />} />
+              </>
+            ) : (
+              <Route path="/" element={<Login setLoggedUser={setLoggedUser} />} />
+            )}
+          </Routes>
+        </main>
+      </div>
     </div>
   );
 }

@@ -1,168 +1,55 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 body {
-    font-size: small;
+    font-family: 'Roboto';
+    font-weight: 400;
 }
 
-html,
-body {
+html body {
     height: 100%;
     margin: 0;
+}
+
+.myAccount {
+    all: unset;
     color: white;
-    background-color: black;
-}
-
-.bg_full {
-    /* background-color: #878787; */
-    background: rgb(228, 228, 228);
-    background: radial-gradient(circle, rgb(212, 212, 212) 0%, rgba(119, 119, 119, 1) 100%);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    /* justify-content: center; */
-    align-items: center;
-    overflow: auto;
-}
-
-.header_band {
-    margin-top: 1vh;
-    margin-bottom: 2vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    max-width: 85%;
-}
-
-.header_band_description {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 600;
-    font-size: medium;
-    text-align: center;
-    align-self: center;
-}
-
-.link_box {
-    display: flex;
-    align-items: center;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 6px;
-    padding-bottom: 6px;
-    background-color: #ffffffce;
-    text-decoration: none;
-    color: black;
-    border-radius: 10px;
-    width: 90%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-
-}
-
-.link_box:hover {
-    background-color: #d7d7d7;
+    font-weight: bolder;
+    margin-left: auto;
+    margin-right: 50px;
     cursor: pointer;
+    padding-left: 20px;
+    padding-right: 20px;
+    transition: all 0.25s;
 }
 
-.popup_bg {
-    position: absolute;
-    background-color: rgba(0, 0, 0, 0.7);
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    justify-items: center;
-    align-items: center;
-    transition: opacity 0.2s;
-}
-
-.popup {
-    position: absolute;
-    width: 70%;
-    /* height: 60%; */
-    background-color: rgb(255, 255, 255);
-    border: black solid 1px;
-    border-radius: 30px;
-    display: flex;
-    flex-direction: column;
-    /* justify-content: center; */
-    align-items: center;
-    color: black;
-    padding: 30px;
-}
-
-.multi_links {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.singleLink {
-    width: 90%;
-    color: black;
-    text-decoration: none;
-    font-size: medium;
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    gap: 10px;
-    padding: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 3px;
-    transition: background-color 0.5s, border-radius ease-in 0.3s;
-    border-radius: 20px;
-
-}
-
-.singleLink:hover {
-    background-color: rgb(167, 167, 167);
+.myAccount:hover {
+    padding-top: 10px;
+    padding-bottom: 10px;
     border-radius: 10px;
-    color: white;
+    background-color: rgba(240, 255, 255, 0.187);
 }
 
-.text_in_click_box {
-    width: 85%;
+.dropDown {
     display: flex;
-    justify-content: center;
-    text-align: center;
+    flex-direction: column;
+    gap: 5px;
+    position: absolute;
+    right: 10px;
+    border-bottom: gray solid 1px;
+    border-left: gray solid 1px;
+    border-right: gray solid 1px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-color: white;
+    width: 200px;
+    padding: 10px;
 }
 
-@media (min-width: 600px) {
-    .text_in_click_box {
-        width: 90%;
-    }
-}
-
-@media (min-width: 1000px) {
-    .link_box {
-        width: 50%;
-    }
-
-    .popup {
-        width: 40%;
-    }
-
-    .text_in_click_box {
-        width: 95%;
-    }
-}
-
-@media (min-width: 1200px) {
-    .text_in_click_box {
-        width: 85%;
-    }
-}
-
-@media (min-width: 1200px) {
-    .text_in_click_box {
-        width: 90%;
-    }
-}
-
-@media (min-width: 2000px) {
-    .text_in_click_box {
-        width: 95%;
-    }
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: 100vh;
+    align-items: center;
+    box-shadow: black 20px -20px 20px -30px;
 }

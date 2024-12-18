@@ -6,7 +6,7 @@ import { toast } from 'react-toastify'
 import SingleVideo from './SingleVideo'
 const config = getConfig()
 
-export default function TikTokInfo({ getLoggedPlatformsStatus }) {
+export default function TikTokInfo({ }) {
     const [videosData, setVideosData] = useState([])
 
     async function getTikTokVideos() {
@@ -17,7 +17,6 @@ export default function TikTokInfo({ getLoggedPlatformsStatus }) {
             if (error?.response?.data) {
                 if (error.response.status === 401) {
                     toast.error(error.response.data)
-                    getLoggedPlatformsStatus()
                 }
             }
             else {
@@ -26,7 +25,7 @@ export default function TikTokInfo({ getLoggedPlatformsStatus }) {
         }
     }
     return (
-        <div style={{ marginTop: '100px' }}>
+        <div style={{}}>
             <button onClick={getTikTokVideos}>Get TikTok Videos</button>
             <div>
                 {videosData.map(video => <SingleVideo video={video} />)}

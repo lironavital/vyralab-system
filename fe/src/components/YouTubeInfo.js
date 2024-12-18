@@ -43,7 +43,7 @@ export default function YouTubeInfo({ getLoggedPlatformsStatus }) {
 
 
     return (
-        <div style={{ marginTop: '100px' }}>
+        <div style={{}}>
             <button onClick={getYoutubeVideos}>Get Youtube Videos</button>
             <button onClick={getGeneralData}>Get Youtube General Data</button>
             {'snippet' in generalData && <GeneralDataComponent data={generalData} />}
@@ -55,22 +55,22 @@ export default function YouTubeInfo({ getLoggedPlatformsStatus }) {
 function GeneralDataComponent({ data }) {
     return <div style={{}}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1vh' }}>
-            <label>Username: {data.snippet.title}</label>
-            <img src={data.snippet.thumbnails.default.url} style={{ width: "10%" }} alt={"IMG_" + data.snippet.title} />
+            <label style={{ fontWeight: 'bold' }}>Username: {data.snippet.title}</label>
+            <img src={data.snippet.thumbnails.default.url} style={{ width: "50%" }} alt={"IMG_" + data.snippet.title} />
         </div>
         <hr></hr>
         <h2>Statistics:</h2>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1vh' }}>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <label>View Count:</label>
+                <label style={{ fontWeight: 'bold' }}>View Count:</label>
                 <label>{data.statistics.viewCount}</label>
             </div>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <label>Published Videos:</label>
+                <label style={{ fontWeight: 'bold' }}>Published Videos:</label>
                 <label>{data.statistics.videoCount}</label>
             </div>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <label>Subscribers:</label>
+                <label style={{ fontWeight: 'bold' }}>Subscribers:</label>
                 <label>{data.statistics.subscriberCount}</label>
             </div>
         </div>

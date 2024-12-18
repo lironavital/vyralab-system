@@ -19,36 +19,36 @@ export default function SingleVideo({ video }) {
         <img src={video.thumbnail_url} style={{ width: "10%", minWidth: '150px' }} alt={video.title} />
         <div style={{ display: 'flex', flexDirection: 'column' }}>
             <div style={infoStyle}>
-                <label>Video ID:</label>
-                <label>{video.video_id}</label>
+                <label style={{ fontWeight: 'bold' }}>Video ID:</label>
+                <span>{video.video_id}</span>
             </div>
             <div style={infoStyle}>
-                <label>Video Link:</label>
+                <label style={{ fontWeight: 'bold' }}>Video Link:</label>
                 <a href={videoURL} target='_blank' rel="noreferrer">{videoURL}</a>
             </div>
             <div style={infoStyle}>
-                <label>Title:</label>
-                <label>{video.title}</label>
+                <label style={{ fontWeight: 'bold' }}>Title:</label>
+                <span>{video.title}</span>
             </div>
             <div style={infoStyle}>
-                <label>Duration:</label>
-                <label>{video.duration}s</label>
+                <label style={{ fontWeight: 'bold' }}>Duration:</label>
+                <span>{video.duration}s</span>
             </div>
             <div style={infoStyle}>
-                <label>Views:</label>
-                <label>{(+video.views).toLocaleString()}</label>
+                <label style={{ fontWeight: 'bold' }}>Views:</label>
+                <span>{(+video.views).toLocaleString()}</span>
             </div>
             <div style={infoStyle}>
-                <label>Likes:</label>
-                <label>{(+video.likes).toLocaleString()}</label>
+                <label style={{ fontWeight: 'bold' }}>Likes:</label>
+                <span>{(+video.likes).toLocaleString()}</span>
             </div>
             {platform === "youtube" && <div style={infoStyle}>
-                <label>Dislikes:</label>
-                <label>{(+video.dislikes).toLocaleString()}</label>
+                <label style={{ fontWeight: 'bold' }}>Dislikes:</label>
+                <span>{(+video.dislikes).toLocaleString()}</span>
             </div>}
             <div style={infoStyle}>
-                <label>Comments:</label>
-                <label>{(+video.comments).toLocaleString()}</label>
+                <label style={{ fontWeight: 'bold' }}>Comments:</label>
+                <span>{(+video.comments).toLocaleString()}</span>
             </div>
         </div>
     </div>
