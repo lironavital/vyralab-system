@@ -1,13 +1,8 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { getConfig } from '../config/getConfig'
+import { platformLogos } from '../static/platforms'
 const config = getConfig()
-
-const platformLogos = {
-    youtube: <img width="48" height="48" src="https://img.icons8.com/color/48/youtube-play.png" alt="youtube-play" />,
-    tiktok: <img width="48" height="48" src="https://img.icons8.com/color/48/tiktok--v1.png" alt="tiktok--v1" />,
-    facebook: <img width="48" height="48" src="https://img.icons8.com/color/48/instagram-new--v1.png" alt="instagram-new--v1" />,
-}
 
 export default function LoginToPlatforms({ }) {
     const [loggedPlatforms, setLoggedPlatforms] = useState({})
@@ -78,7 +73,7 @@ export default function LoginToPlatforms({ }) {
     }
 
     return (
-        <div style={{ display: 'flex', paddingTop: '5dvw', paddingBottom: '5dvw', width: '100%', gap: '5dvw', justifyContent: 'center', backgroundColor: 'crimson' }}>
+        <div style={{ display: 'flex', padding: '5vw', gap: '5dvw', justifyContent: 'center', backgroundColor: 'crimson', }}>
             {/* LOGGED BUTTONS */}
             {Object.keys(loggedPlatforms).map(platform => {
                 if (!loggedPlatforms[platform]) {
@@ -96,7 +91,7 @@ export default function LoginToPlatforms({ }) {
                     return (
                         <div key={platform} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
                             {/* <h1>{platform} Logged!</h1> */}
-                            {platformLogos[platform]}
+                            {platformLogos[platform].imgJSX}
                             <button onClick={() => handleLogout(platform)}>Logout</button>
                         </div>
                     );
@@ -112,20 +107,20 @@ function returnPlatformByName({ platformName, loginFunc }) {
         case 'facebook':
             return <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
                 {/* <h1>Facebook Login</h1> */}
-                {platformLogos[platformName]}
+                {platformLogos[platformName].imgJSX}
                 <button onClick={loginFunc}>Login with Facebook</button>
             </div>
 
         case 'tiktok':
             return <div key="tiktok" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
                 {/* <h1>TikTok Login</h1> */}
-                {platformLogos[platformName]}
+                {platformLogos[platformName].imgJSX}
                 <button onClick={e => window.location = `${config.backend}/oauth/tiktok`}>Login with TikTok</button>
             </div>
         case 'youtube':
             return <div key="youtube" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
                 {/* <h1>YouTube Login</h1> */}
-                {platformLogos[platformName]}
+                {platformLogos[platformName].imgJSX}
                 <button onClick={e => window.location = `${config.backend}/oauth/youtube`}>Login with YouTube</button>
             </div>
 

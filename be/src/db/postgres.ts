@@ -113,12 +113,21 @@ async function getVideosByUserAndPlatform(userID: string, platform: string) {
 
 async function getDataFreshnessByUserAndPlatform(userID: string, platform: string) {
     const result = await pool.query(`SELECT * FROM data_freshness WHERE user_id='${userID}' AND platform='${platform}';`);
-    return result.rows[0];
+    if (result.rows[0]) {
+        return result.rows[0];
+    }
+    else {
+        return { data_freshness: false }
+    }
 }
 
 async function setDataFreshnessByUserAndPlatform(userID: string, platform: string) {
     const timeNow = new Date().toISOString().slice(0, 19).replace('T', ' ')
-    const query = `INSERT INTO data_freshness (user_id, platform, data_freshness) VALUES (${userID},'${platform}', '${timeNow}');`
+    // const query = `INSERT INTO data_freshness (user_id, platform, data_freshness) VALUES (${userID},'${platform}', '${timeNow}');`
+    const query = `INSERT INTO data_freshness (user_id, platform, data_freshness) VALUES (${userID},'${platform}', '${timeNow}')
+    ON CONFLICT (user_id) DO UPDATE
+    SET user_id = EXCLUDED.user_id, platform = EXCLUDED.platform, data_freshness = EXCLUDED.data_freshness
+    RETURNING *;`
     const result = await pool.query(query);
     return result.rows[0];
 }

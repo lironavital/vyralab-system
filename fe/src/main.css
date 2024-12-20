@@ -26,7 +26,10 @@ html body {
     padding-top: 10px;
     padding-bottom: 10px;
     border-radius: 10px;
-    background-color: rgba(240, 255, 255, 0.187);
+    background-color: rgba(240 255;
+            255;
+            0.187);
+    ;
 }
 
 .dropDown {
@@ -50,6 +53,56 @@ html body {
     flex-direction: column;
     gap: 15px;
     height: 100vh;
+    width: 300px;
     align-items: center;
     box-shadow: black 20px -20px 20px -30px;
+}
+
+.sidebarItem {
+    width: 70%;
+    font-size: 20px;
+    text-decoration: none;
+    display: flex;
+    gap: 50px;
+    align-items: center;
+    /* margin-left: auto;
+    margin-right: auto; */
+    color: black;
+    background-color: rgb(219, 219, 219);
+    border-radius: 12px;
+    padding: 8px;
+    transition: all .5s;
+}
+
+.currentPath {
+    background-color: rgb(185, 162, 191);
+}
+
+.sidebarItem:hover {
+    background-color: gray;
+}
+
+@media (max-width:1200px) {
+    .sidebar {
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+        height: 100px;
+        background-color: blueviolet;
+        display: flex;
+        flex-direction: row;
+        box-shadow: none;
+        align-items: center;
+        border-top: black solid;
+    }
+
+    .sidebarItem {
+        height: 100%;
+        width: 200px;
+        font-size: medium;
+        text-decoration: none;
+        color: black;
+        justify-content: center;
+        background-color: rgb(219, 219, 219);
+    }
 }

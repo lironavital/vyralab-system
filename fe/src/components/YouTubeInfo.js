@@ -47,7 +47,7 @@ export default function YouTubeInfo({ getLoggedPlatformsStatus }) {
             <button onClick={getYoutubeVideos}>Get Youtube Videos</button>
             <button onClick={getGeneralData}>Get Youtube General Data</button>
             {'snippet' in generalData && <GeneralDataComponent data={generalData} />}
-            {videosData.map(video => <SingleVideo video={video} />)}
+            {videosData.map(video => <SingleVideo key={`video_disp_${video.video_id}`} video={video} />)}
         </div>
     );
 }

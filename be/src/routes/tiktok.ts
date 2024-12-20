@@ -54,9 +54,12 @@ app.get('/videos', validateJWT, async (req: Request, res: Response): Promise<any
                     return await updateUser(req.userData.id, { tt_act: token.accessToken, tt_act_expire: token.expire })
                 }
                 else {
-                    res.status(401).send("User is not logged to YouTube anymore!")
+                    res.status(401).send("User is not logged to TikTok anymore!")
                     return await updateUser(req.userData.id, { tt_act: token.accessToken, tt_act_expire: token.expire }) // nulls
                 }
+            }
+            else { 
+                return res.status(401).send("User is not logged to TikTok!")
             }
         }
         else {

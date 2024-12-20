@@ -4,6 +4,7 @@ import axios from 'axios'
 import { getConfig } from '../config/getConfig'
 import { toast } from 'react-toastify'
 import SingleVideo from './SingleVideo'
+import ShowPopup from '../hooks/ShowPopup'
 const config = getConfig()
 
 export default function TikTokInfo({ }) {
@@ -24,12 +25,11 @@ export default function TikTokInfo({ }) {
             }
         }
     }
-    return (
-        <div style={{}}>
-            <button onClick={getTikTokVideos}>Get TikTok Videos</button>
-            <div>
-                {videosData.map(video => <SingleVideo video={video} />)}
-            </div>
+    return (<>
+        <button style={{ marginBottom: '1vh' }} onClick={getTikTokVideos}>Get TikTok Videos</button>
+        <div>
+            {videosData.map(video => <SingleVideo key={`video_disp_${video.video_id}`} video={video} />)}
         </div>
+    </>
     );
 }
